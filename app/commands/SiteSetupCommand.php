@@ -174,7 +174,6 @@ class SiteSetupCommand extends Command {
 
 			$local_path = 'database.connections.mysql';
 			$creds = Config::get('database.connections.mysql');
-			$this->line(var_export($creds)."\n");
 
 
 
@@ -213,9 +212,6 @@ class SiteSetupCommand extends Command {
 			if($creds['prefix']) { 
 				$this->line(var_export($creds)."\n");
 			}
-
-			$creds = ConfigHelper::setAndSave($local_path, $creds, 'local');
-
 
 			$this->line("\n*******************************");
 			$this->line("\n  Local Database Credentials   ");
