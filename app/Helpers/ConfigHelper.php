@@ -10,6 +10,7 @@ class ConfigHelper extends \Illuminate\Config\FileLoader {
 
     // ------------------------------------------------------------------------
     static function getInstance() {
+        return new Illuminate\Config\FileLoader(Config::getLoader()->getFilesystem(), app_path() . '/config');
         if(ConfigHelper::$instance == null) {
             ConfigHelper::$instance = new Illuminate\Config\FileLoader(Config::getLoader()->getFilesystem(), app_path() . '/config');
         }
@@ -91,7 +92,10 @@ class ConfigHelper extends \Illuminate\Config\FileLoader {
             File::put($file, $data);
             
         }
-        return $items;
+        
+        return $file;
+        return array_get($items, $group);
+
         //$items = $loader->files->getRequire($file);   
         //$data = '<?php return '.var_export( $items, true ).';';
         

@@ -101,6 +101,43 @@ class SiteSetupCommand extends Command {
 	}
 
 	// ------------------------------------------------------------------------
+	public function createGoogleCredentials() {
+		$google_creds = array();
+
+		$google_creds['api_key'] = $this->ask('API Key? ');			
+		if($google_creds['api_key']) { 
+			//$this->line(var_export($google_creds)."\n");
+		}
+
+		$google_creds['app_name'] = $this->ask('App name? ');			
+		if($google_creds['app_name']) { 
+			//$this->line(var_export($google_creds)."\n");
+		}
+
+		$google_creds['client_id'] = $this->ask('Client ID? ');			
+		if($google_creds['client_id']) { 
+			//$this->line(var_export($google_creds)."\n");
+		}
+
+		$google_creds['client_secret'] = $this->ask('Client secret? ');			
+		if($google_creds['client_secret']) { 
+			//$this->line(var_export($google_creds)."\n");
+		}
+
+		$google_creds['redirect_uri'] = $this->ask('Redirect URI? ');			
+		if($google_creds['redirect_uri']) { 
+			//$this->line(var_export($google_creds)."\n");
+		}
+
+		$google_creds['scopes'] = $this->ask('Scopes? ');			
+		if($google_creds['scopes']) { 
+			//$this->line(var_export($google_creds)."\n");
+		}
+
+		return $google_creds;
+	}
+
+	// ------------------------------------------------------------------------
 	/**
 	 * Execute the console command.
 	 *
@@ -112,16 +149,32 @@ class SiteSetupCommand extends Command {
 		$this->line('Setting up Laravel Starter Site');
 		$this->line("*******************************\n");
 
+
+        // google creds
+        if($this->confirm('Use Google+ Auth? [yes|no]', true)) {
+
+        	$google_creds = Config::get('google-config');
+        	$this->line("\n");
+			if($this->confirm("Enter local Google credentials? [yes|no]", true)) {
+				$google_creds['local'] = $this->createGoogleCredentials();
+			}
+			$this->line("\n");
+			if($this->confirm("Enter remote Google credentials? [yes|no]", true)) {
+				$google_creds['remote'] = $this->createGoogleCredentials();
+			}
+
+			ConfigHelper::setAndSave('google-config.local', $google_creds['local'], 'production');
+			ConfigHelper::setAndSave('google-config.remote', $google_creds['remote'], 'production');
+
+        }
+         
 		 // create a admin user?
         if($this->confirm('Setup local database credentials? [yes|no]', true)) {
 			
-			$creds = [
-				'hostname' => Config::get('database.connections.mysql.hostname'),
-				'database' => Config::get('database.connections.mysql.database'),
-				'username' => Config::get('database.connections.mysql.username'),
-				'password' => Config::get('database.connections.mysql.password'),
-				'prefix'   => Config::get('database.connections.mysql.prefix'),
-			];	
+
+			$local_path = 'database.connections.mysql';
+			$creds = Config::get('database.connections.mysql');
+			$this->line(var_export($creds)."\n");
 
 
 
@@ -136,35 +189,37 @@ class SiteSetupCommand extends Command {
 		    //   'prefix' => 'site_',
 		    // ),
 
-			$creds['hostname'] = $this->ask("Hostname? ");			
-			if($creds['hostname']) { 
-				ConfigHelper::setAndSave('database.connections.mysql.host', $creds['hostname'], 'local');
+			$creds['host'] = $this->ask("Hostname? ");			
+			if($creds['host']) { 
+				$this->line(var_export($creds));
 			}
 
 			$creds['database'] = $this->ask('Database name? ');			
 			if($creds['database']) { 
-				ConfigHelper::setAndSave('database.connections.mysql.database', $creds['database'], 'local');
+				$this->line(var_export($creds)."\n");
 			}
 
 			$creds['username'] = $this->ask('Database username? ');			
 			if($creds['username']) { 
-				ConfigHelper::setAndSave('database.connections.mysql.username', $creds['username'], 'local');
+				$this->line(var_export($creds)."\n");
 			}
 
 			$creds['password'] = $this->ask('Database password? ');			
 			if($creds['password']) { 
-				ConfigHelper::setAndSave('database.connections.mysql.password', $creds['password'], 'local');
+				$this->line(var_export($creds)."\n");
 			}
 
 			$creds['prefix'] = $this->ask('Database prefix? ');			
 			if($creds['prefix']) { 
-				ConfigHelper::setAndSave('database.connections.mysql.prefix', $creds['prefix'], 'local');
+				$this->line(var_export($creds)."\n");
 			}
+
+			$creds = ConfigHelper::setAndSave($local_path, $creds, 'local');
+
 
 			$this->line("\n*******************************");
 			$this->line("\n  Local Database Credentials   ");
 			$this->line("*******************************\n");
-			$creds = ConfigHelper::get('database.connections.mysql', 'local');
 			foreach ($creds as $key => $value) {
 				$this->line("{$key} = {$value}");
 			}
@@ -186,10 +241,11 @@ class SiteSetupCommand extends Command {
 		if( $sitename == NULL) {
 			$sitename = $this->ask('What is the name of this site? ');
 			if($sitename) {
-				Config::set('config.site-name', $sitename?$sitename:'Laravel Starter Site');
+				Config::set('config.site-name', $sitename);
 				ConfigHelper::save('config', 'production');				
 			}
 		}
+		$sitename = empty($sitename)?'Laravel Starter Site' : $sitename;
         $this->comment("\nStarter site: {$sitename}\n");
 
 
@@ -206,11 +262,13 @@ class SiteSetupCommand extends Command {
         }
         
 
+        
+
 
 
         // create a admin user?
         if($this->confirm('Do you want to create an Admin user? [yes|no]', true)) {
-			$this->comment('\nCreating a Admin user with username "admin" and password "admin"\n');        	
+			$this->comment("\nCreating a Admin user with username \"admin\" and password \"admin\"\n");        	
 			$this->createAdminUser();
         }
 

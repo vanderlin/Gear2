@@ -1,6 +1,6 @@
 <?php return array (
-  'site-name' => 'Laravel Starter Site',
-  'site-password' => 'demo',
+  'site-name' => 'demo site',
+  'site-password' => '1234',
   'google_creds' => 'google_creds_local',
   'use_google_login' => false,
   'use_site_login' => true,
