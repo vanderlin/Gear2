@@ -59,7 +59,7 @@
 					        	<div class="col-md-3">
 					            	<button tabindex="3" type="submit" class="btn btn-default">{{{ Lang::get('confide::confide.login.submit') }}}</button>
 					            </div>
-					            @if (Config::get('app.use_google_login'))
+					            @if (Config::get('config.use_google_login'))
 					            	<div class="col-md-9 pull-left" style="margin-top:2px">
 										<a href="{{ GoogleSessionController::generateOAuthLink(['access_type'=>'offline', 'hd'=>'ideo.com', 'registering'=>true, 'display'=>'popup', 'state'=>'signin']) }}" class="btn btn-default">Sign in with google</a>
 									</div>

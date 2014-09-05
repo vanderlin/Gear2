@@ -1,4 +1,5 @@
 <?php
+	
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,7 @@ Route::group(array('before'=>'siteprotection'), function() {
 		Route::get('/', ['uses'=>'AssetsController@index']);
 		Route::get('{id}/{size?}', ['uses'=>'AssetsController@resize']);
 	});
+
 
 
 	// --------------------------------------------------------------------------

@@ -125,7 +125,6 @@ return array(
 		'Zizaco\Confide\ServiceProvider',
 		'Zizaco\Entrust\EntrustServiceProvider',
 	    'Intervention\Image\ImageServiceProvider'
-	
 	),
 
 	/*

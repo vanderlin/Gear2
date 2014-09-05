@@ -107,7 +107,7 @@
 		</div>
 	</div>
 
-    @if (Config::get('app.use_google_login'))
+    @if (Config::get('config.use_google_login'))
 	<div class="panel panel-default">
 		<div class="panel-heading"><h4>Register via Google+</h4></div>
 		<div class="panel-body text-center">

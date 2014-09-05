@@ -13,9 +13,5 @@ return array(
 	|
 	*/
 
-	'debug' 			  => true,
-	'google_creds' 		  => 'google_creds_local',
-	'use_google_login'	  => false,
-	'use_site_login'	  => false,
-
+	'debug' => true,
 );
