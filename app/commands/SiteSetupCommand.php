@@ -173,7 +173,7 @@ class SiteSetupCommand extends Command {
         }
 
 
-        return;
+        
 
 		 // create a admin user?
         if($this->confirm('Migrate the database? [yes|no]', true)) {
