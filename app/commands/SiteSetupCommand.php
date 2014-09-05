@@ -116,7 +116,7 @@ class SiteSetupCommand extends Command {
         if($this->confirm('Setup local database credentials? [yes|no]', true)) {
 			
 			$creds = [
-				'hostname' => Config::get('database.connections.mysql.host'),
+				'hostname' => Config::get('database.connections.mysql.hostname'),
 				'database' => Config::get('database.connections.mysql.database'),
 				'username' => Config::get('database.connections.mysql.username'),
 				'password' => Config::get('database.connections.mysql.password'),
