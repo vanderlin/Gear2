@@ -221,6 +221,7 @@ class SiteSetupCommand extends Command {
 			}
 			$this->line("\n");
 
+			Config::set($local_path, $creds);
         }
 
 

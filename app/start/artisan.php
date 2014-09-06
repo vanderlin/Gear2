@@ -13,3 +13,4 @@
 
 // ------------------------------------------------------------------------
 Artisan::add(new SiteSetupCommand);
+Artisan::add(new UserGeneratorCommand);
