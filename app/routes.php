@@ -70,25 +70,6 @@ Route::group(array('before'=>'siteprotection'), function() {
 	// Home
 	// --------------------------------------------------------------------------	
 	Route::get('/', function() {
-
-		$file = 'local/database';
-		$phppos = strrpos($file, ".php");
-		return substr($file, 0, $phppos?$phppos:strlen($file));
-		
-		$reader = Config::getLoader();//new ConfigHelper(Config::getLoader()->getFilesystem(), Config::getEnvironment());
-	 	$data = $reader->load('local', 'local/database');
-
-
-	 	$data2 = $data;
-	 	array_set($data2, 'connections.mysql.username', '***');
-
-	 	//            $data = "<?php return ".var_export( $items, true).";";
-
-
-		return ['A'=>$data, 'B'=>$data2];
-
-		return DB::connection()->getConfig('username');
-		return '';
 		return View::make('site.index');
 	});
 
