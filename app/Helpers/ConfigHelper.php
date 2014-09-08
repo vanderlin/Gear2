@@ -17,6 +17,11 @@ class ConfigHelper extends \Illuminate\Config\FileLoader {
         return ConfigHelper::$instance;
     }
 
+    // ------------------------------------------------------------------------
+    public function loadConfig() {
+        $reader = new Illuminate\Config\FileLoader(Config::getLoader()->getFilesystem(), app_path() . '/config');
+        return $reader;
+    }
 
     // ------------------------------------------------------------------------
     static function save($namespace, $environment=null) {
@@ -63,45 +68,30 @@ class ConfigHelper extends \Illuminate\Config\FileLoader {
 
     
     // ------------------------------------------------------------------------
-    static function setAndSave($namespace, $value, $environment=null) {
+    static function setAndSaveConfigFile($file, $namespace, $value, $environment=null) {
 
-        $loader = ConfigHelper::getInstance();
+        $phppos = strrpos($file, ".php");
+        $load_name = substr($file, 0, $phppos?$phppos:strlen($file));
+        $file_name = $phppos ? $file : $file.'.php';
 
-        $items = array();
         $env  = $environment==null ? Config::getEnvironment() : $environment;
+        $reader = Config::getLoader();
+        $path = $reader->getPath(null);
+        $data = $reader->load($env, $load_name);
 
-        // First we'll get the root configuration path for the environment which is
-        // where all of the configuration files live for that namespace, as well
-        // as any environment folders with their specific configuration items.
-        $path = $loader->getPath(null);
 
-        $parts = explode('.', $namespace);
-
-        $filename = count($parts)>0?$parts[0]:$namespace;
-        $group = implode(".", array_slice($parts, 1));
-        $env  = $environment==null ? Config::getEnvironment() : $environment;
-        $file = (!$env || ($env == 'production')) ? "{$path}/{$filename}.php" : "{$path}/{$env}/{$filename}.php";
-
-        if($loader->files->exists($file)) {
-            $items = $loader->files->getRequire($file);   
-            
-            array_set($items, $group, $value);
-
-            $data = "<?php return ".var_export( $items, true).";";
-
-            File::put($file, $data);
-            
+        if($namespace == null) {
+            $data = $value;
         }
-        
-        return $file;
-        return array_get($items, $group);
+        else {
+            array_set($data, $namespace, $value);
+        }
 
-        //$items = $loader->files->getRequire($file);   
-        //$data = '<?php return '.var_export( $items, true ).';';
-        
-        //$loader->files->put($file, $data);
+        $new_data = "<?php return ".var_export( $data, true).";";
 
+        File::put($path.'/'.$file_name, $new_data);
         
+        return $new_data;        
         
     }
     
