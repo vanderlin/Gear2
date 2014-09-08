@@ -265,9 +265,7 @@ class SiteSetupCommand extends Command {
 			$t = ConfigHelper::setAndSaveConfigFile("local/database.php", 'connections.mysql', $creds);
 			Config::set("database.connections.mysql", $creds);
 			DB::connection("mysql");
-
-			$k = User::all();
-			
+						
         }
 
 
