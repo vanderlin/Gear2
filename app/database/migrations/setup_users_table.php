@@ -10,6 +10,9 @@ class ConfideSetupUsersTable extends Migration {
      */
     public function up() {
 
+        // waiting on feedback from github
+        $foreign_prefix = '';//Config::get('database.connections.mysql.prefix', '');
+
         // Creates the users table
         Schema::create('users', function($table) {
             $table->engine = 'InnoDB';
@@ -50,13 +53,14 @@ class ConfideSetupUsersTable extends Migration {
             $table->engine = 'InnoDB';
             $table->increments('id');
         });
-        Schema::table('assigned_roles', function($table) {
-            $table->integer('user_id')->unsigned();
-            $table->integer('role_id')->unsigned();
+        Schema::table('assigned_roles', function($table) use($foreign_prefix) {
+            $table->integer($foreign_prefix.'user_id')->unsigned();
+            $table->integer($foreign_prefix.'role_id')->unsigned();
         });
-        Schema::table('assigned_roles', function($table) {
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+        
+        Schema::table('assigned_roles', function($table) use($foreign_prefix) {
+            $table->foreign($foreign_prefix.'user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign($foreign_prefix.'role_id')->references('id')->on('roles')->onUpdate('cascade')->onDelete('cascade');
         });
 
         // Creates the permissions table
@@ -70,14 +74,14 @@ class ConfideSetupUsersTable extends Migration {
         Schema::create('permission_role', function($table) {
             $table->increments('id');
         });
-        Schema::table('permission_role', function($table) {
-            $table->integer('permission_id')->unsigned();
-            $table->integer('role_id')->unsigned();
+        Schema::table('permission_role', function($table) use($foreign_prefix) {
+            $table->integer($foreign_prefix.'permission_id')->unsigned();
+            $table->integer($foreign_prefix.'role_id')->unsigned();
         });
-        Schema::table('permission_role', function($table) {
-            $table->unique(array('permission_id','role_id'));
-            $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+        Schema::table('permission_role', function($table) use($foreign_prefix) {
+            $table->unique(array($foreign_prefix.'permission_id', $foreign_prefix.'role_id'));
+            $table->foreign($foreign_prefix.'permission_id')->references('id')->on('permissions')->onDelete('cascade');
+            $table->foreign($foreign_prefix.'role_id')->references('id')->on('roles')->onDelete('cascade');
         });
 
     }

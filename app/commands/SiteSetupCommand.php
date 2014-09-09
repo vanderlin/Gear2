@@ -137,21 +137,6 @@ class SiteSetupCommand extends Command {
 		return $google_creds;
 	}
 
-	// ------------------------------------------------------------------------
-	public function deleteAllTables() {
-			
-			Schema::dropIfExists('permission_role');
-			Schema::dropIfExists('assigned_roles');
-			Schema::dropIfExists('roles');
-			Schema::dropIfExists('assets');
-
-			Schema::dropIfExists('migrations');
-			Schema::dropIfExists('password_reminders');
-			Schema::dropIfExists('users');
-			Schema::dropIfExists('permissions');
-
-		
-	}
 
 	// ------------------------------------------------------------------------
 	/**
@@ -160,20 +145,10 @@ class SiteSetupCommand extends Command {
 	 * @return mixed
 	 */
 	public function fire() {
-
+		
 		$this->comment("\n*******************************");
 		$this->comment('Setting up Laravel Starter Site');
 		$this->comment("*******************************\n");
-
-		if($this->argument('reset')) {
-
-			if($this->confirm('Are you sure you want to DELETE all tables in database? [yes|no]', true)) {
-				$this->comment('*** DELETING ALL TABLES ***');
-				$this->deleteAllTables();
-			}
-
-			return;
-		}
 
         // google creds
         if($this->confirm('Use Google+ Auth? [yes|no]', true)) {
@@ -208,7 +183,6 @@ class SiteSetupCommand extends Command {
 		 // create a admin user?
         if($this->confirm('Setup local database credentials? [yes|no]', true)) {
 			
-
 			$local_db_path = 'database.connections.mysql';
 			$creds = Config::get($local_db_path); // default data
 
@@ -216,6 +190,8 @@ class SiteSetupCommand extends Command {
 			foreach ($creds as $key => $value) {
 				$this->line("{$key} = {$value}");
 			}
+
+			
 
 
 			 // array (
@@ -254,6 +230,14 @@ class SiteSetupCommand extends Command {
 			if($prefix) { 
 				$creds['prefix'] = $prefix;
 			}
+			else {
+				$this->comment("If you do not set a prefix you may run into foriegn key conflics.");
+				$prefix = $this->ask('Database prefix? ');			
+				if($prefix) { 
+					$creds['prefix'] = $prefix;
+				}
+			}
+
 
 			$this->comment("\n*******************************");
 			$this->comment("   Local Database Credentials    ");
@@ -326,7 +310,7 @@ class SiteSetupCommand extends Command {
 	protected function getArguments()
 	{
 		return array(
-			array('reset', InputArgument::OPTIONAL, 'Reset the site.', null)
+			// array('reset', InputArgument::OPTIONAL, 'Reset the site.', null)
 			//array('example', InputArgument::REQUIRED, 'An example argument.'),
 		);
 	}

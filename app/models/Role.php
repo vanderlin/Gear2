@@ -9,6 +9,8 @@ class Role extends EntrustRole {
       'name' => 'required|between:4,255'
     );
     
+	
+
 	public function hasPerm($perm_name) {
 		
 		foreach ($this->perms as $perm) {

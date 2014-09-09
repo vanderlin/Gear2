@@ -13,4 +13,5 @@
 
 // ------------------------------------------------------------------------
 Artisan::add(new SiteSetupCommand);
+Artisan::add(new ResetSiteCommand);
 Artisan::add(new UserGeneratorCommand);
