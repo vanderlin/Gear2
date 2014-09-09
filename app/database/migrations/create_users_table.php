@@ -1,7 +1,7 @@
 <?php
 use Illuminate\Database\Migrations\Migration;
 
-class ConfideSetupUsersTable extends Migration {
+class CreateUsersAndRolesTable extends Migration {
 
     /**
      * Run the migrations.
