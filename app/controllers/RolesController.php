@@ -9,7 +9,7 @@ class RolesController extends \BaseController {
 	 * @return Response
 	 */
 	public function index() {
-		return View::make('admin.roles.index');
+		return View::make('admin.index', ['page'=>'roles']);
 	}
 
 	/**

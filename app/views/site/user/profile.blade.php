@@ -59,7 +59,7 @@
 				        	<div class="form-group">
 				          		<label for="email" class="col-sm-3 control-label">Email</label>
 				          		<div class="col-sm-9">
-				            		<input type="email" class="form-control" id="email" placeholder="example@ideo.com" value="{{$user->email}}" disabled>
+				            		<input type="email" class="form-control" id="email" name="email" placeholder="example@website.com" value="{{$user->email}}" {{Auth::user()->hasRole('Admin')?'':'disabled'}}>
 				          		</div>
 				        	</div>
 

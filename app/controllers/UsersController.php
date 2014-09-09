@@ -74,6 +74,12 @@ class UsersController extends Controller {
             }
 
 
+            if (Input::has('email')) {
+                $user->email = Input::get('email');
+                $made_update = true;
+            }
+
+
             if(Input::has('office_location')) {
                 $user->location_id = Input::get('office_location');
                 $made_update = true;

@@ -38,7 +38,8 @@ class ResetSiteCommand extends Command {
 			Schema::dropIfExists('assigned_roles');
 			Schema::dropIfExists('roles');
 			Schema::dropIfExists('assets');
-
+			Schema::dropIfExists('themes');
+			
 			Schema::dropIfExists('migrations');
 			Schema::dropIfExists('password_reminders');
 			Schema::dropIfExists('users');

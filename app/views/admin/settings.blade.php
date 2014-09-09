@@ -12,6 +12,28 @@
 			</div>
 		</div>
 
+		<div class="well row">
+			<div class="form-group">
+				<label for="site-name">Site Password</label>
+				<div class="row">
+					<div class="col-md-6">
+						<input type="text" class="form-control" id="site-password" name="site-password" placeholder="{{{Config::get('config.site-password')}}}" value="">
+					</div>
+
+					<div class="col-md-5 text-center">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="use-site-password" {{{ Config::get('config.use_site_login')=='1'?'checked':'' }}} > Use a site password
+						</label>
+					</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+
 		<div class="form-group row">
 			<div class="text-right">
 				<button type="submit" class="btn btn-default">Update</button>

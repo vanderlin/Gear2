@@ -1,19 +1,3 @@
-
-    
-    
-
-
-
-@extends('admin.layouts.default')
-
-{{-- Web site Title --}}
-@section('title')
-  LocalsOnly | Admin | Roles
-@stop
-
-{{-- Content --}}
-@section('content')
-
 <h1 class="page-header">Roles &amp; Permissions</h1>
 <div class="col-md-6">
   
@@ -56,6 +40,3 @@
 
 
 </div>
-
-@stop
-

@@ -41,7 +41,19 @@ Route::group(array('before'=>'siteprotection'), function() {
 		});
 
 		Route::get('users', function() {
-			return View::make('admin.index');
+			return View::make('admin.index', ['page'=>'users']);
+		});
+
+		Route::get('themes', function() {
+			return View::make('admin.index', ['page'=>'themes']);
+		});
+
+		Route::get('settings', function() {
+			return View::make('admin.index', ['page'=>'settings']);
+		});
+
+		Route::get('assets', function() {
+			return View::make('admin.index', ['page'=>'assets']);
 		});
 
 		Route::get('user/{id}', function($id) {
@@ -53,6 +65,7 @@ Route::group(array('before'=>'siteprotection'), function() {
 		Route::resource('permissions', 'PermissionsController');		
 		Route::put('user/{id}', ['uses'=>'UsersController@editUserRoles']);
 		Route::put('settings', ['uses'=>'AdminController@updateSettings']);
+		Route::get('themes/{theme}', ['uses'=>'AdminController@activateTheme']);
 	});
 
 
