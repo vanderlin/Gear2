@@ -52,7 +52,7 @@ Route::group(array('before'=>'siteprotection'), function() {
 		Route::resource('roles', 'RolesController');
 		Route::resource('permissions', 'PermissionsController');		
 		Route::put('user/{id}', ['uses'=>'UsersController@editUserRoles']);
-
+		Route::put('settings', ['uses'=>'AdminController@updateSettings']);
 	});
 
 
@@ -102,7 +102,7 @@ Route::group(array('before'=>'siteprotection'), function() {
 	Route::put('users/{id}', ['uses'=>'UsersController@updateProfile', 'before'=>'auth']);
 
 	// --------------------------------------------------------------------------
-	// Experiences
+	// Profiles
 	// --------------------------------------------------------------------------
 	Route::group(array('before' => 'auth'), function() {
 

@@ -38,7 +38,6 @@
             @include('admin.layouts.top-navigation');
             {{-- Main Menu --}}
 
-
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             @include('admin.layouts.sidebar')
             <!-- /.navbar-collapse -->

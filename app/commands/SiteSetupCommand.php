@@ -34,63 +34,6 @@ class SiteSetupCommand extends Command {
 
 	}
 
-
-	// ------------------------------------------------------------------------
-	public function createAdminUser() {
-
-		// create default user asset
-		$asset = Asset::where('filename', '=', 'default.png')->first();
-		if($asset == NULL) {
-			$asset = new Asset;
-  			$asset->filename = 'default.png';
-		  	$asset->path = 'assets/content/users'; 
-		  	$asset->save();
-		}
-
-		$admin = Role::where('name', '=', 'Admin')->first();
-
-		// create default roles
-		if($admin == NULL) {
-			$admin = new Role;
-			$admin->name = 'Admin';
-			$admin->save();
-		}
-
-
-		$adminUser = User::where('username', '=', 'admin')->first();
-
-		if($adminUser != NULL) {
-
-			$this->error("Admin User Already Exist");
-
-			if($this->confirm('Remove this Admin User? [yes|no]', true)) {
-				$adminUser->delete();
-				$adminUser = NULL;
-	        }
-
-		}
-		
-		if($adminUser == NULL) {
-			$adminUser = new User;
-
-			$adminUser->username = 'admin';
-			$adminUser->email = 'admin@admin.com';
-			$adminUser->password = 'admin';
-			$adminUser->password_confirmation = 'admin';
-		    $adminUser->confirmation_code = md5(uniqid(mt_rand(), true));
-
-		    if($adminUser->save()) {
-				$adminUser->attachRole( $admin );
-		    	$this->comment("Admin User Created");
-		    }
-		}
-
-		
-		
-	}
-
-
-
 	// ------------------------------------------------------------------------
 	// Migrate the database
 	// ------------------------------------------------------------------------
@@ -145,6 +88,7 @@ class SiteSetupCommand extends Command {
 	 * @return mixed
 	 */
 	public function fire() {
+		
 		
 		$this->comment("\n*******************************");
 		$this->comment('Setting up Laravel Starter Site');
@@ -291,8 +235,7 @@ class SiteSetupCommand extends Command {
 
         // create a admin user?
         if($this->confirm('Do you want to create an Admin user? [yes|no]', true)) {
-			$this->comment("\nCreating a Admin user with username \"admin\" and password \"admin\"\n");        	
-			$this->createAdminUser();
+			$this->call('site:adduser', array('admin-user'=>'admin-user'));  	
         }
 
 		$this->comment("\n*******************************");

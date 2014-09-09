@@ -7,5 +7,5 @@
 
 {{-- Content --}}
 @section('content')
-	@include('admin.users')
+	@include('admin.settings')
 @stop
