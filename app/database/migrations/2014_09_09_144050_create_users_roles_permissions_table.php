@@ -1,7 +1,9 @@
 <?php
+
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersAndRolesTable extends Migration {
+class CreateUsersRolesPermissionsTable extends Migration {
 
     /**
      * Run the migrations.
