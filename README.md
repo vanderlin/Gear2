@@ -1,15 +1,17 @@
-Setup the database.php
 
-in the app/bootstrap/start.php 
-set the local machine name. In terminal type hostname this is the name of your machine, locally. 
+This is a starter site for Laravel, out of the box you get Users, Roles, Permission and Assets. The package comes with BootStrap installed. 
 
+**Setup**
 
-composer update
+make sure you have composer installed. See how to install composer here https://getcomposer.org/
 
+clone the repo via:  
+`git clone git@github.com:vanderlin/LaravelStarterSite.git sitename`
 
-art asset:publish --path="vendor/twbs/bootstrap/dist" "../assets/bootstrap"
+Move to new repo  
+`cd sitename`
 
-art confide:migration
-artisan entrust:migration
+`composer install`
 
-art migrate
+To setup the site run    
+`artisan site:setup`
