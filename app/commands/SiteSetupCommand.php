@@ -235,7 +235,7 @@ class SiteSetupCommand extends Command {
 
         // create a admin user?
         if($this->confirm('Do you want to create an Admin user? [yes|no]', true)) {
-			$this->call('site:adduser', array('admin-user'=>'admin-user'));  	
+        	$this->call('site:adduser', array('--admin' => 'yes'));
         }
 
 		$this->comment("\n*******************************");
