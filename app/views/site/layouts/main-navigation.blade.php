@@ -32,7 +32,7 @@
           <li class="dropdown">
             
             <a href="/me" class="dropdown-toggle" data-toggle="dropdown">
-              <img width="40" height="40" src="{{ Auth::getUser()->profileImage->url('w40') }}" class="nav-profile-image img-circle">
+              <img width="40" height="40" src="{{ Auth::getUser()->profileImage->url('s40') }}" class="nav-profile-image img-circle">
               {{ Auth::getUser()->getName() }}
               <span class="caret"></span>
             </a>

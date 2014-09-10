@@ -10,10 +10,14 @@
 
 <!-- Bootstrap -->
 @include('site.partials.bootstrap-head')
+<script src="{{ asset('assets/js/jquery.hoverIntent.js') }}"></script>
 <script src="{{asset('assets/js/main.js')}}"></script>
 <link href="{{asset('assets/css/main.css')}}" rel="stylesheet">
 
-
+<?php $active_theme = Theme::activeTheme() ?>
+@if ($active_theme) 
+	{{ $active_theme->headCode }}
+@endif
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

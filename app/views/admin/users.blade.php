@@ -16,7 +16,7 @@
         @foreach (User::all() as $user)
           
           <tr>
-            <td><img src="{{ $user->profileImage->url('w30h30') }}" class="img-circle"></td>
+            <td><img src="{{ $user->profileImage->url('s30') }}" class="img-circle"></td>
             <td>{{ $user->id }}</td>
             <td>{{ $user->username }}</td>
             <td>{{ link_to('mailto:'.$user->email, $user->email, ['target'=>'_blank'])}}</td>

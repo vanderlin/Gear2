@@ -17,3 +17,7 @@
 	margin-bottom: 20px;
 	margin-left: -20px;
 }
+
+.theme-code-textarea {
+	resize:vertical; /* none|horizontal|vertical|both */
+}

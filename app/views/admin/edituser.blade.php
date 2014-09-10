@@ -48,7 +48,7 @@
 
       <div class="form-group row">
         <div class="col-md-12 text-right">
-          {{ link_to('traveler/'.$user->username, 'View Profile', ['class'=>'btn btn-default']) }}
+          {{ link_to('users/'.$user->id, 'View Profile', ['class'=>'btn btn-default']) }}
           <button type="submit" class="btn btn-default">Update</button>
         </div>
       </div>

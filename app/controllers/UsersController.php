@@ -20,6 +20,11 @@ class UsersController extends Controller {
     }
 
     // ------------------------------------------------------------------------
+    public function show($id) {
+        return View::make('site.user.profile', ['user'=>User::find($id)]);
+    }
+
+    // ------------------------------------------------------------------------
     public function register() {
         return View::make('site.user.register');
     }

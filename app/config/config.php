@@ -1,8 +1,8 @@
 <?php return array (
-  'site-name' => 'Best Site Ever',
-  'site-password' => '111',
+  'site-name' => 'StarterSite',
+  'site-password' => 'demo',
   'google_creds' => 'google_creds_local',
   'use_google_login' => false,
   'use_site_login' => false,
-  'active-bootstrap-theme' => NULL,
+  'active-bootstrap-theme' => '1',
 );

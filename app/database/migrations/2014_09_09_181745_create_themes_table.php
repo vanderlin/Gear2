@@ -15,7 +15,7 @@ class CreateThemesTable extends Migration {
 			$table->increments('id');
 			$table->string('path');
 			$table->string('name');
-			$table->boolean('active');
+			$table->boolean('active')->default(0);
 			$table->text('code');
 			$table->timestamps();
 		});

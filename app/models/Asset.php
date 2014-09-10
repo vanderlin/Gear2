@@ -5,6 +5,14 @@ class Asset extends \Eloquent {
 
 
     // ------------------------------------------------------------------------
+    public function __construct($attributes = array(), $exists = false) {
+      parent::__construct($attributes, $exists);
+
+      $this->uid = uniqid();
+  
+    }
+
+    // ------------------------------------------------------------------------
     static function imageSizes() {
       return array(
 
@@ -16,6 +24,11 @@ class Asset extends \Eloquent {
         return $this->morphTo();
     }
 
+    // ------------------------------------------------------------------------
+    public function getName() {
+      if($this->name == null) return $this->filename;
+      return $this->name;
+    }
 
   	// ------------------------------------------------------------------------
   	public function saveRemoteImage($url, $save_path, $filename) {

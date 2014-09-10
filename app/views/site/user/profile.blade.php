@@ -8,19 +8,43 @@
 
 {{-- Scripts --}}
 @section('scripts')
-    
+    <script type="text/javascript">
+    $(document).ready(function() {
+    	
+    	// $("#profile-image-container").click(function() {
+
+    	// });
+    	//hover({
+    	// 	over:function() {
+    	// 	},
+    	// 	out:function() {
+    	// 	}
+    	// });
+
+    });
+    </script>
 @stop
 
 
 {{-- Content --}}
 @section('content')
 
+<!-- Modal -->
+<div class="modal fade" id="asset-upload-modal" tabindex="-1" role="dialog" aria-labelledby="asset-upload" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
 <div class="row">
 	<div class="col-md-6 col-md-offset-3">
 		
 
 		{{-- -------------------------------------------------------- --}}
-		@if (Auth::check() && Auth::id() == $user->id)
+		@if ( (Auth::check() && Auth::id() == $user->id) || (Auth::user()->hasRole('Admin')))
 			
 			{{-- Profile info --}}
 			<div class="panel panel-default">
@@ -44,8 +68,16 @@
 		      				<input type="hidden" value="PUT" name="_method">
 		      				
 		      				<div class="form-group text-center">
-								<div class="col-sm-12">
-									<img src="{{ $user->profileImage->url() }}" class="img-circle profile-image"> 
+								<div class="col-sm-12" id="profile-image-container">
+									<img src="{{ $user->profileImage->url('s150') }}" class="img-circle profile-image"> 
+									<div class="edit-profile-image-button">
+										<?php $type = get_class($user) ?>
+										@if ($user->hasDefaultProfileImage())
+											{{ link_to("assets/upload/modal?id={$user->id}&type={$type}", 'Upload Image', ['data-toggle'=>'modal', 'data-target'=>'#asset-upload-modal']) }}
+										@else
+											{{ link_to("assets/{$user->profileImage->id}/edit?modal=true", 'Edit', ['data-toggle'=>'modal', 'data-target'=>'#asset-upload-modal']) }}
+										@endif
+									</div>
 								</div>
 							</div>
 							
@@ -128,19 +160,7 @@
 							<br><br>
 						</div>
 							
-						<div class="col-md-12">
-							<div class="list-group">
-								@foreach ($user->experiences as $experience)
-									<div class="list-group-item">
-										{{ link_to('experiences/'.$experience->id, $experience->title, ['class'=>'']) }}
-										@if ($experience->hasLocation())
-											<small class="pull-right"> {{ $experience->location->name }}</small>
-										@endif
-									</div>
-								@endforeach
-							</div>
-
-						</div>
+					
 
 					</div>
 				</div>

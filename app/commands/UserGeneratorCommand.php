@@ -41,6 +41,7 @@ class UserGeneratorCommand extends Command {
 		if($asset == NULL) {
 			$asset = new Asset;
   			$asset->filename = 'default.png';
+  			$asset->org_filename = 'default.png';
 		  	$asset->path = 'assets/content/users'; 
 		  	$asset->save();
 		}
@@ -93,13 +94,32 @@ class UserGeneratorCommand extends Command {
 	 *
 	 * @return mixed
 	 */
-	public function fire()
-	{
-		if($this->argument('admin-user')) {
+	public function fire() {
+		
+		if($this->option('admin') != null) {
 			$this->comment('Adding Admin User');
 			$this->createAdminUser();
 		}
 
+		if($this->option('username') != null && $this->option('email') && $this->option('password')) {
+			$this->comment("Creating user:{$this->option('username')}");
+			
+			$user = new User;
+			$user->username = $this->option('username');
+			$user->email = $this->option('email');
+			$user->password = $this->option('password');
+			$user->password_confirmation = $this->option('password');
+		    $user->confirmation_code = md5(uniqid(mt_rand(), true));
+		    if($user->save()) {
+		    	$this->comment("User Created");
+		    }
+		    else {
+		    	foreach ($user->errors()->all() as $err) {
+		    		$this->error($err);
+		    	}
+		    	
+		    }
+		}
 
 	}
 
@@ -110,7 +130,7 @@ class UserGeneratorCommand extends Command {
 	 */
 	protected function getArguments() {
 		return array(
-			array('admin-user', InputArgument::OPTIONAL, 'Add admin user'),
+
 		);
 	}
 
@@ -122,7 +142,10 @@ class UserGeneratorCommand extends Command {
 	protected function getOptions()
 	{
 		return array(
-			// array('admin-user', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
+			array('admin', null, InputOption::VALUE_OPTIONAL, 'Create and Admin user.', null),
+			array('username', null, InputOption::VALUE_OPTIONAL, 'Enter username', null),
+			array('email', null, InputOption::VALUE_OPTIONAL, 'Enter email', null),
+			array('password', null, InputOption::VALUE_OPTIONAL, 'Enter password', null),
 		);
 	}
 

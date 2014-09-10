@@ -1,19 +1,27 @@
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="theme-head-code" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+      
+
     </div>
   </div>
 </div>
@@ -42,12 +50,14 @@
           <?php 
             $name  = substr($theme, strripos($theme, '/')+1);
             $theme = ucfirst( $name );
-            $is_active = strtolower($name) == strtolower($active_theme);
-            $on_off = $is_active ? 'false' : 'true';
+
             $is_installed = false;
-            foreach ($installed_themes as $installed_theme) {
-              if($installed_theme->name == $name) {
+            $installed_theme = null;
+
+            foreach ($installed_themes as $it) {
+              if($it->name == $name) {
                 $is_installed = true;
+                $installed_theme = $it;
                 break;
               } 
             }
@@ -56,11 +66,11 @@
 
 
             <td>{{ $theme }}</td>
-            <td>{{ link_to('#edit-head-code', 'Edit', ['data-toggle'=>'modal', 'data-target'=>'#myModal']) }}</td>
+            <td>{{ $is_installed ? link_to("admin/themes/{$installed_theme->id}/edit?modal=true", 'Edit', ['data-toggle'=>'modal', 'data-target'=>'#theme-head-code']) : '' }}</td>
             @if ($is_installed)
-              <td>{{ link_to("admin/themes/{$name}?activate={$on_off}", $is_active?'Deactivate':'Activate', ['class'=>'btn '.($is_active?'btn-success':'btn-default').' pull-right']) }}</td>
+              <td>{{ link_to("admin/themes/{$installed_theme->id}?activate=".($installed_theme->active?'false':'true'), $installed_theme->active?'Deactivate':'Activate', ['class'=>'btn '.($installed_theme->active?'btn-success':'btn-default').' pull-right']) }}</td>
             @else
-              <td>{{ link_to("admin/themes/{$name}?install=true", 'Install', ['class'=>'btn btn-default pull-right']) }}</td>
+              <td>{{ link_to("admin/themes/{$name}/install", 'Install', ['class'=>'btn btn-default pull-right']) }}</td>
             @endif
           </tr>
 

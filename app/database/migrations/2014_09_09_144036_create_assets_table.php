@@ -16,7 +16,10 @@ class CreateAssetsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('path');
+			$table->string('name');
+			$table->string('uid');
 			$table->string('filename');
+			$table->string('org_filename');
 			$table->integer('assetable_id');
 			$table->string('assetable_type');
 			$table->timestamps();

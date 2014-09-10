@@ -13,7 +13,11 @@ class User extends Eloquent implements ConfideUserInterface {
     	return $this->morphOne('Asset', 'assetable');
     }
 
-    public function getProfileImageAttribute() {
+    public function hasDefaultProfileImage() {
+       return $this->profileImage()->first() == null;
+    }
+
+    public function getProfileImageAttribute() {    
         $img = $this->profileImage()->first();
         if($img == null) return Asset::where('filename', '=', 'default.png')->first();
         return $img;
@@ -24,7 +28,8 @@ class User extends Eloquent implements ConfideUserInterface {
     }
 
     public function getRoleName() {
-        return $this->roles()->first()->name;
+
+        return $this->roles() ? $this->roles()->first()->name : 'no role';
     }
 
     public function getProfileLinkAttribute() {

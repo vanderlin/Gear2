@@ -11,6 +11,9 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+
+// ------------------------------------------------------------------------
+// Site Password Protection
 // ------------------------------------------------------------------------
 Route::post('site-login', function() {
 	if(Input::has('site-password')) {
@@ -30,6 +33,23 @@ Route::post('site-login', function() {
 Route::group(array('before'=>'siteprotection'), function() {
 
 	
+	
+
+	/*
+	------------------------------------------------------------------------
+
+
+
+		********	Start Creating your app routes here		********	 
+
+
+
+
+	------------------------------------------------------------------------
+	*/
+
+
+
 
 	// --------------------------------------------------------------------------
 	// Admin / Roles
@@ -65,7 +85,11 @@ Route::group(array('before'=>'siteprotection'), function() {
 		Route::resource('permissions', 'PermissionsController');		
 		Route::put('user/{id}', ['uses'=>'UsersController@editUserRoles']);
 		Route::put('settings', ['uses'=>'AdminController@updateSettings']);
-		Route::get('themes/{theme}', ['uses'=>'AdminController@activateTheme']);
+		Route::get('themes/{name}/install', ['uses'=>'AdminController@installTheme']);
+		Route::get('themes/{id}', ['uses'=>'AdminController@activateTheme']);
+		Route::put('themes/{id}', ['uses'=>'AdminController@updateTheme']);
+		Route::get('themes/{id}/edit', ['uses'=>'AdminController@editTheme']);
+
 	});
 
 
@@ -77,6 +101,15 @@ Route::group(array('before'=>'siteprotection'), function() {
 		Route::get('{id}/{size?}', ['uses'=>'AssetsController@resize']);
 	});
 
+	// ------------------------------------------------------------------------
+	Route::get('assets/upload/modal', function() {
+		return View::make('admin.assets.upload-modal');
+	});
+	Route::get('assets/{id}/edit', function($id) {
+		return View::make('admin.assets.edit-modal', ['asset'=>Asset::find($id)]);
+	});
+	Route::post('assets/upload', ['uses'=>'AssetsController@upload']);
+	Route::put('assets/{id}', ['uses'=>'AssetsController@edit']);
 
 
 	// --------------------------------------------------------------------------
@@ -115,7 +148,7 @@ Route::group(array('before'=>'siteprotection'), function() {
 	Route::put('users/{id}', ['uses'=>'UsersController@updateProfile', 'before'=>'auth']);
 
 	// --------------------------------------------------------------------------
-	// Profiles
+	// Profiles & Users
 	// --------------------------------------------------------------------------
 	Route::group(array('before' => 'auth'), function() {
 
@@ -124,6 +157,12 @@ Route::group(array('before'=>'siteprotection'), function() {
 		});
 
 	});
+
+	// ------------------------------------------------------------------------
+	Route::get('users/{id}', ['uses'=>'UsersController@show']);
+
+
+
 
 
 });
