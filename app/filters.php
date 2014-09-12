@@ -89,9 +89,4 @@ Route::filter('csrf', function()
 	}
 });
 
-// ------------------------------------------------------------------------
-Route::filter('siteprotection', function() {
-	if(Config::get('config.use_site_login') && Session::has('siteprotection') == false) {
-		return View::make('site.site-login');
-	}
-});
+
