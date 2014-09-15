@@ -3,6 +3,7 @@
 <div class="col-md-6">
 	
 	<form method="POST" class="form-horizontal" role="form" action="{{{ URL::to('admin/settings') }}}" accept-charset="UTF-8">
+		
 		<input type="hidden" value="PUT" name="_method">
 
 		<div class="well row">
@@ -21,11 +22,12 @@
 					</div>
 
 					<div class="col-md-5 text-center">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" name="use-site-password" {{{ Config::get('slate::use_site_login')=='1'?'checked':'' }}} > Use a site password
-						</label>
-					</div>
+						<div class="checkbox">
+							<label>
+								
+								<input {{Config::get('slate::use_site_login')=='1'?'checked':''}}  type="checkbox" name="use-site-password"> Use a site password
+							</label>
+						</div>
 					</div>
 
 				</div>
@@ -38,12 +40,29 @@
 			<div class="text-right">
 				<button type="submit" class="btn btn-default">Update</button>
 			</div>
+			<a id="test">test</a>
 		</div>
-
-		<div class="text-center">
-			@include('slate::site.partials.form-errors')
-		</div
 
 	</form>
 
+	<div class="text-center">
+		@include('slate::site.partials.form-errors')
+	</div>
+
+<pre>
+	<?php 
+	print_r([Config::get('slate::config.site-name'),
+			 Config::getItems()])
+	 ?>
+</pre>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function($) {
+		
+	
+		$("#test").click(function(event) {
+			alert("{{ Config::get('slate::site-name') }}");
+		});
+	});	
+</script>

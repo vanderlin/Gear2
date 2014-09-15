@@ -7,7 +7,7 @@
     
     <title>
       @section('title')
-      {{Config::get('slate::site_name')}} | Admin
+      {{Config::get('slate::site-name')}} | Admin
       @show
     </title>
 

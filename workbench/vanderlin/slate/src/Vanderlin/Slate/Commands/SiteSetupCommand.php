@@ -11,7 +11,7 @@ class SiteSetupCommand extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'site:setup';
+	protected $name = 'slate:setup';
 
 	/**
 	 * The console command description.

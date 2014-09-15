@@ -1,14 +1,16 @@
 <?php namespace Vanderlin\Slate\Controllers;
 
 use Session;
+use Config;
+use Google_Client;
 
 class GoogleSessionController extends BaseController {
 
 	// ------------------------------------------------------------------------
 	static function getCreds() {
 		
-		$creds_path = Config::get('app.google_creds', 'google_creds_remote');	
-		$obj = (object)Config::get('google-config.'.$creds_path);
+		$creds_path = Config::get('slate::google_creds', 'remote');	
+		$obj = (object)Config::get('slate::google.'.$creds_path);
 
 		return $obj;
 	}
@@ -187,7 +189,7 @@ class GoogleSessionController extends BaseController {
 				}
 
 			
-				$back_url = 'traveler/'.$username;
+				$back_url = 'users/'.$username;
 				Auth::login($user);			
 	        	return Redirect::to($back_url);		
 
@@ -201,7 +203,7 @@ class GoogleSessionController extends BaseController {
 			
 		}
 		
-		return $wantsJson ? Response::json(['errors'=>['Missing OAuth Code']]) : Redirect::to('register')->with(['errors'=>$user->errors()]);
+		return $wantsJson ? Response::json(['errors'=>['Missing OAuth Code']]) : Redirect::to('register')->with(['errors'=>$user->errors()->all()]);
 	}
 
 	// ------------------------------------------------------------------------

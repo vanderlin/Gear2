@@ -193,9 +193,9 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
 
-		'Confide'    => 'Zizaco\Confide\Facade',
-		'Entrust'    => 'Zizaco\Entrust\EntrustFacade',
-		'Image' => 'Intervention\Image\Facades\Image',
+		'Confide'    	  => 'Zizaco\Confide\Facade',
+		'Entrust'    	  => 'Zizaco\Entrust\EntrustFacade',
+		'Image' 	 	  => 'Intervention\Image\Facades\Image',
 
 	),
 

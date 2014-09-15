@@ -1,4 +1,3 @@
-
 <div class="main-navbar navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -11,7 +10,7 @@
           </button>
           <a href="{{URL::to('/')}}">
             <!-- <img src="{{ asset('assets/content/img/hipster-logo.png') }}" style="width:100px; height:100px;" class="navbar-brand"><br> -->
-            {{link_to('/', Config::get('config.site-name'), ['class'=>'navbar-brand'])}}
+            {{link_to('/', Config::get('slate::config.site-name'), ['class'=>'navbar-brand'])}}
           </a>
 
         </div>

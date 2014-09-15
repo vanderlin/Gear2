@@ -4,21 +4,21 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ResetSiteCommand extends Command {
+class PublishSlateCommand extends Command {
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'slate:reset';
+	protected $name = 'slate:publish';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Delete all tables and reset to default';
+	protected $description = 'Publish assets and configuration';
 
 	/**
 	 * Create a new command instance.
@@ -32,36 +32,16 @@ class ResetSiteCommand extends Command {
 
 
 	// ------------------------------------------------------------------------
-	public function deleteAllTables() {
-			
-			Schema::dropIfExists('permission_role');
-			Schema::dropIfExists('assigned_roles');
-			Schema::dropIfExists('roles');
-			Schema::dropIfExists('assets');
-			Schema::dropIfExists('themes');
-			
-			Schema::dropIfExists('migrations');
-			Schema::dropIfExists('password_reminders');
-			Schema::dropIfExists('users');
-			Schema::dropIfExists('permissions');
-
-		
-	}
-
 	/**
 	 * Execute the console command.
 	 *
 	 * @return mixed
 	 */
 	public function fire() {
-		
-		if($this->confirm('Are you sure you want to DELETE all tables in database? [yes|no]', true)) {
-			$this->comment('*** DELETING ALL TABLES ***');
-			$this->deleteAllTables();
-		}
-
-		return;
-	
+		if($this->confirm('Are you sure you want to publish config/assets? |yes|no|')) {
+			$this->call('config:publish', ['package'=>'vanderlin/slate', '--path'=>'workbench/vanderlin/slate/src/Vanderlin/Slate/Config/']);
+	        $this->info( "publishing complete!" );
+    	}
 	}
 
 	/**

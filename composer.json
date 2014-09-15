@@ -11,7 +11,8 @@
         "bllim/datatables": "~1.3",
 		"google/apiclient": "1.0.*@beta",
 		"intervention/image": "2.*",
-		"intervention/imagecache": "dev-master"
+		"intervention/imagecache": "dev-master",
+		"guzzlehttp/guzzle": "~4.0"
 	},
 	"autoload": {
 		"classmap": [

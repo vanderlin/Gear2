@@ -71,7 +71,7 @@
 								<div class="col-sm-12" id="profile-image-container">
 									<img src="{{ $user->profileImage->url('s150') }}" class="img-circle profile-image"> 
 									<div class="edit-profile-image-button">
-										<?php $type = get_class($user) ?>
+										<?php $type = get_class($user); ?>
 										@if ($user->hasDefaultProfileImage())
 											{{ link_to("assets/upload/modal?id={$user->id}&type={$type}", 'Upload Image', ['data-toggle'=>'modal', 'data-target'=>'#asset-upload-modal']) }}
 										@else

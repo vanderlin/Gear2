@@ -1,12 +1,12 @@
-@extends('site.layouts.default')
+@extends('slate::site.layouts.default')
 
 {{-- Web site Title --}}
 @section('title')
-{{Config::get('config.site_name')}} | Register
+{{Config::get('slate::site-name')}} | Register
 @stop
 
 @section('head')
-	@include('site.partials.google-meta')
+	{{--@include('slate::site.partials.google-meta')--}}
 @stop
 
 {{-- -------------------------------------------------------------- --}}
@@ -14,7 +14,7 @@
 {{-- -------------------------------------------------------------- --}}
 @section('scripts')
 	
-	@include('site.partials.google-js')
+	@include('slate::site.partials.google-js')
 
 	<script type="text/javascript">
 	var win = null;
@@ -24,7 +24,7 @@
 		var title = 'Register With Google';
 		var left = (screen.width/2)-(w/2);
   		var top  = (screen.height/2)-(h/2);
-  		var url  = "{{ GoogleSessionController::generateOAuthLink(['hd'=>'ideo.com']) }}";
+  		var url  = "{{ Vanderlin\Slate\Controllers\GoogleSessionController::generateOAuthLink(['hd'=>'ideo.com']) }}";
 
   		if(win) win.close();
   		win = window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
@@ -51,7 +51,7 @@
 		    // ------------------------------------------------------------------------
 			connectServer: function() {	
 				$.ajax({
-					url: '{{ URL::to("google/register") }}?state={{GoogleSessionController::getState()}}',
+					url: '{{ URL::to("google/register") }}?state={{Vanderlin\Slate\Controllers\GoogleSessionController::getState()}}',
 					type: 'POST',
 					dataType: 'json',
         			data: {'code':this.authResult.code},
@@ -103,17 +103,18 @@
 		</div>
 
 		<div class="panel-body">
-			{{ Confide::makeSignupForm()->render() }}
+			@include('slate::site.user.register-form')
+			{{-- Confide::makeSignupForm()->render() --}}
 		</div>
 	</div>
 
-    @if (Config::get('config.use_google_login'))
+    @if (Config::get('slate::use_google_login'))
 	<div class="panel panel-default">
 		<div class="panel-heading"><h4>Register via Google+</h4></div>
 		<div class="panel-body text-center">
 
 			{{-- GoogleSessionController::generateGoogleLoginButton(['data-width'=>'wide']); --}}
-			<a href="{{ GoogleSessionController::generateOAuthLink(['access_type'=>'offline', 'hd'=>'ideo.com', 'registering'=>true, 'display'=>'popup', 'state'=>'registering']) }}" class="btn btn-default">Register with google</a>
+			<a href="{{ Vanderlin\Slate\Controllers\GoogleSessionController::generateOAuthLink(['access_type'=>'offline', 'hd'=>'ideo.com', 'registering'=>true, 'display'=>'popup', 'state'=>'registering']) }}" class="btn btn-default">Register with google</a>
 			<!-- <a href="#register" id="google-register-btn" class="btn btn-default">Register with google</a> -->
 			<div class="error-text" id="form-information"></div>
 		</div>
@@ -121,7 +122,7 @@
 	@endif
 	
 	<div id="form-information" class="text-center">
-    	@include('site.partials.form-errors')
+    	@include('slate::site.partials.form-errors')
 	</div>
 
 </div>

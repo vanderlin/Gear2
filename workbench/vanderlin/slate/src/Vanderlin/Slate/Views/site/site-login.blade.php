@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    @include('site.layouts.head')
+    @include('slate::site.layouts.head')
   </head>
   <body>
 
@@ -25,12 +25,13 @@
 							</div>
 
 							<div class="form-group">
+								<a href="{{ URL::to('email-site-password') }}" class="btn btn-default">Forgot Password</a>
 								<button type="submit" class="btn btn-default">Enter</button>
 							</div>
 						</form>
 					</div>
 					<div class="row text-center">
-						@include('site.partials.form-errors')
+						@include('slate::site.partials.form-errors')
 					</div>	
 				</div>
 			</div>

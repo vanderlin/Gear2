@@ -27,17 +27,68 @@ class ConfigHelper extends \Illuminate\Config\FileLoader {
         return $reader;
     }
 
+    
+   public static function my_var_export($in) {
+        
+        $out = "array (\n";
+
+        foreach($in as $k=>$v)
+           {
+           $out .= "\t$k =>\n";
+           $out .= "\tarray (\n";
+           $array_keys = array_keys($v);
+           foreach($array_keys as $k2=>$v2)
+               {
+               if(isset($array[$k][$v2]))
+                   { $array[$k][$v2] = sprintf("'%s'",$array[$k][$v2]); }
+               else
+                   { $array[$k][$v2] = "NULL"; }
+               $out .= sprintf("\t\t'%s' => %s,\n",$v2,$array[$k][$v2]);
+               }
+           $out .= "\t),\n";
+           }
+        $out .= ");";
+
+        return $out;
+    }
     // ------------------------------------------------------------------------
     static function save($namespace, $environment=null) {
 
-        $loader = ConfigHelper::getInstance();
+        $loader = Config::getLoader();
+        list($namespace, $item) = explode('::', $namespace);
 
-        $path = $loader->load('production', 'config');
+        $dotpos       = strrpos($item, ".");
+        $filename     = $dotpos === false ? 'config' : substr($item, 0, $dotpos);
+        $package_file = $loader->getPath($namespace)."/{$filename}.php";
+        $local_file   = app_path()."/config/packages/vanderlin/{$namespace}/{$filename}.php";
+        
+        if($loader->files->exists($local_file)) {
+            $c = Config::get("{$namespace}::{$filename}");
+            $data = '<?php return '.var_export( $c, true ).';';
+            
+            $loader->files->put($local_file, $data);
 
-        dd([$path,
-            $namespace
-            ]);
+           
+            return 'Saved';
+        }
+        else {
+            
 
+            return 'Please publish assest/config';    
+        }
+        
+        return;
+        
+        
+
+        echo "<pre>";
+        print_r([$package_file,
+                 $local_file,
+                 $loader->files->exists($local_file),
+                 $namespace
+                ]);
+        echo "</pre>";
+        dd('');
 
         $env  = $environment==null ? Config::getEnvironment() : $environment;
         

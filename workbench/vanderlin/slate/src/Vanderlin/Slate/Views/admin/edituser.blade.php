@@ -1,9 +1,9 @@
 
-@extends('admin.layouts.default')
+@extends('slate::admin.layouts.default')
 
 {{-- Web site Title --}}
 @section('title')
-  {{Config::get('config.site_name')}} | Edit Users
+  {{Config::get('slate::site-name')}} | Edit Users
 @stop
 
 {{-- Content --}}
@@ -39,7 +39,7 @@
         <div class="form-group">
           <label for="roles" class="col-sm-2 control-label">Roles</label>
           <div class="col-sm-10">
-            @include('admin.partials.roles', ['user'=>$user])
+            @include('slate::admin.partials.roles', ['user'=>$user])
           </div>
         </div>
       </div>

@@ -40,7 +40,7 @@
 
 	<div class="modal-footer">
 		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		<button tabindex="3" type="submit" class="btn btn-primary">Upload</button>
+		<button tabindex="3" type="submit" class="btn btn-primary">Save</button>
 	</div>
 	
 {{Form::close()}}

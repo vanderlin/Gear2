@@ -10,7 +10,7 @@ require __DIR__.'/filters.php';
 Route::post('site-login', function() {
 	if(Input::has('site-password')) {
 
-		if(Input::get('site-password') == Config::get('config.site-password')) {
+		if(Input::get('site-password') == Config::get('slate::site-password')) {
 			Session::set('siteprotection', 'YES');
 			return Redirect::back();
 		}
@@ -20,14 +20,33 @@ Route::post('site-login', function() {
 
 });
 
+Route::get('email-site-password', function() {
+	return View::make("slate::site.email-site-password");
+});
+
+Route::post('email-site-password', function() {
+	if(Input::has('email')) {
+
+		$email = Input::get('email');
+
+		if(User::where('email', '=', $email)->first()) {
+
+			Mail::send('slate::emails.test', array('key' => 'value'), function($message) use($email) {
+			    $message->to($email, Config::get('slate::site-name'))->subject('Site Password');
+			});
+			return Redirect::back()->with(['notice'=>"An email was sent to {$email}"]);
+		}
+		return Redirect::back()->with(['error'=>'No user found by that email']);
+	}
+	return Redirect::back()->with(['error'=>'Missing email']);
+});
+
+
 
 // ------------------------------------------------------------------------
 Route::group(array('before'=>'siteprotection'), function() {
 
 	
-
-
-
 
 	// --------------------------------------------------------------------------
 	// Admin / Roles
@@ -81,10 +100,10 @@ Route::group(array('before'=>'siteprotection'), function() {
 
 	// ------------------------------------------------------------------------
 	Route::get('assets/upload/modal', function() {
-		return View::make('admin.assets.upload-modal');
+		return View::make('slate::admin.assets.upload-modal');
 	});
 	Route::get('assets/{id}/edit', function($id) {
-		return View::make('admin.assets.edit-modal', ['asset'=>Asset::find($id)]);
+		return View::make('slate::admin.assets.edit-modal', ['asset'=>Asset::find($id)]);
 	});
 	Route::post('assets/upload', ['uses'=>'Vanderlin\Slate\Controllers\AssetsController@upload']);
 	Route::put('assets/{id}', ['uses'=>'Vanderlin\Slate\Controllers\AssetsController@edit']);

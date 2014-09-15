@@ -14,7 +14,7 @@ class UserGeneratorCommand extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'site:adduser';
+	protected $name = 'slate:adduser';
 
 	/**
 	 * The console command description.

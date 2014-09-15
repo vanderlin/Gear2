@@ -13,6 +13,14 @@ class SlateServiceProvider extends ServiceProvider {
 	 */
 	protected $defer = false;
 
+	public function boot() {
+		// 	$loader = $this->app['config']->getLoader();
+		// $configs = $loader->load($this->app['config']->getEnvironment(),'config','slate');
+		// // $this->app['config']->set('slate::config.debug', $configs->debug);
+		// $this->app['config']->set('app.debug',$configs['app']['debug']);
+		//Config::set('app.debug', true);
+		
+	}
 
 	// ------------------------------------------------------------------------
 	/**
@@ -44,9 +52,39 @@ class SlateServiceProvider extends ServiceProvider {
 		View::addNamespace('slate', __DIR__."/Views");
 		Config::addNamespace('slate', __DIR__.'/Config');
 
-		// 'Confide'    => 'Zizaco\Confide\Facade',
+		$this->app['config']->package('vanderlin/slate', __DIR__.'/Config');
 
-		
+		//dd('');
+
+
+
+		// 'Confide'    => 'Zizaco\Confide\Facade',
+		//$this->app['config']->set('app.debug', true);
+		// $this->app['config'] = $this->app->bind(function($app) {
+  //           return 'ttt';
+  //       });
+        		// dd($this->app['config']->get('app.debug'));
+
+		/*
+		// Get config loader
+		$loader = $this->app['config']->getLoader();
+
+		// Add package namespace with path set base on your requirement
+		$loader->addNamespace('basset',__DIR__.'/../config/basset');
+
+		// Load package override config file
+		$configs = $loader->load($this->app['config']->getEnvironment(),'config','basset');
+
+		// Override value
+		$this->app['config']->set('basset::config',$configs);
+		*/
+	
+		//Config::set('*::app.debug', Config::get('slate::debug'));
+
+		// echo "<pre>";
+		// print_r($this->app['config']);
+		// echo "</pre>";
+		// dd('');
 
         // $this->app['slate.user.repository'] = $this->app->share(function($app) {
         //     return new UserRepository;
@@ -71,27 +109,31 @@ class SlateServiceProvider extends ServiceProvider {
 	// ------------------------------------------------------------------------
 	public function setCommands() {
 
-		$this->app['site.reset'] = $this->app->share(function($app) {
+		$this->app['slate.reset'] = $this->app->share(function($app) {
             return new Commands\ResetSiteCommand;
         });
-        $this->commands('site.reset');
+        $this->commands('slate.reset');
 
-        $this->app['site.setup'] = $this->app->share(function($app) {
+        $this->app['slate.setup'] = $this->app->share(function($app) {
             return new Commands\SiteSetupCommand;
         });
-        $this->commands('site.setup');
+        $this->commands('slate.setup');
 
-        $this->app['site.adduser'] = $this->app->share(function($app) {
+        $this->app['slate.adduser'] = $this->app->share(function($app) {
             return new Commands\UserGeneratorCommand;
         });
-        $this->commands('site.adduser');
+        $this->commands('slate.adduser');
+
+       	$this->app['slate.publish'] = $this->app->share(function($app) {
+            return new Commands\PublishSlateCommand;
+        });
+        $this->commands('slate.publish');
 	}
 
 	// ------------------------------------------------------------------------
 	public function setConnection() {
 
-	    $connection = Config::get('slate::local/database.connections');
-
+	    $connection = Config::get('slate::database.connections');
 	    Config::set('database.connections', $connection);
 	}
 

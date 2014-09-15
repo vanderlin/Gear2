@@ -16,6 +16,11 @@ class Asset extends \Eloquent {
     }
 
     // ------------------------------------------------------------------------
+    public function generateUID() {
+      $this->uid = uniqid();
+    }
+
+    // ------------------------------------------------------------------------
     static function imageSizes() {
       return array(
 

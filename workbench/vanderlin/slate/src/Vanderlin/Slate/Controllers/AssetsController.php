@@ -3,6 +3,9 @@
 use Vanderlin\Slate\Asset;
 use Intervention\Image\Facades\Image;
 use Response;
+use Input;
+use Redirect;
+use File;
 
 class AssetsController extends \BaseController {
 
@@ -70,11 +73,18 @@ class AssetsController extends \BaseController {
 		$file = Input::file('file');
 
 		if($file) {
+			
+			
+
 			$old_file = "{$asset->path}/{$asset->filename}";
 			$destination = 'assets/uploads';
 			$asset->filename = "{$asset->uid}.{$file->getClientOriginalExtension()}";
 			$asset->org_filename = $file->getClientOriginalName();
 			$asset->path = $destination;
+
+			$asset->generateUID();
+			$asset->filename = "{$asset->uid}.{$file->getClientOriginalExtension()}";
+
 		
 			File::delete($old_file);		
 			$file->move($destination, $asset->filename);
@@ -90,7 +100,9 @@ class AssetsController extends \BaseController {
 			$asset->assetable_id = Input::get('id');
 			$asset->assetable_type = Input::get('type');
 		}
+
 		$asset->save();
+		
 		return Redirect::back()->with(['notice'=>'Asset updated']);
 	}
 

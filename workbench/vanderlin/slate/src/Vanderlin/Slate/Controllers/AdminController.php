@@ -2,6 +2,9 @@
 
 use Input;
 use Config;
+use Cache;
+use App;
+
 use Vanderlin\Slate\Helpers\ConfigHelper;
 use Illuminate\Support\Facades\Session;
 use Controller;
@@ -14,28 +17,23 @@ class AdminController extends \BaseController {
 	public function updateSettings() {
 
 
-
-
-
 		if(Input::has('site-name')) {
-			$value = Input::get('site-name');
-			Config::set('slate::site-name', $value);
-			ConfigHelper::save('slate::site-name', 'production');		
+			Config::set('slate::site-name', Input::get('site-name'));
+			ConfigHelper::save('slate::site-name');
 		}
-		dd(Input::all());
 
 		if(Input::has('site-password')) {
 			$value = Input::get('site-password');
-			Config::set('config.site-password', $value);
-			ConfigHelper::save('config', 'production');		
+			Config::set('slate::site-password', $value);
+			ConfigHelper::save('slate::site-password');
 		}
 		
 		$value = Input::get('use-site-password');
 		Session::forget('siteprotection');
 		Config::set('slate::use_site_login', $value=='on'?true:false);
-		ConfigHelper::save('slate::config', 'production');		
+		ConfigHelper::save('slate::use_site_login');		
 
-		return Redirect::back()->with(['notice'=>'Settings Updated']);
+		return Redirect::back()->with(['notice'=>"Settings Updated"]);
 
 	}
 
