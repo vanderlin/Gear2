@@ -1,3 +1,10 @@
+@if(isset($errors)) 
+	@if (is_array($errors))
+		@foreach ($errors as $err)
+			<div class="alert">{{$err}}</div>
+		@endforeach
+	@endif
+@endif
 @if (Session::get('error'))
     <div class="alert alert-error alert-danger">
         @if (is_array(Session::get('error')))

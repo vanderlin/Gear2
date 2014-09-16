@@ -10,7 +10,6 @@
 	'google_creds' 				=> 'local',
 	'use_google_login' 			=> false,
 	'use_site_login' 			=> false,
-	'active-bootstrap-theme' 	=> '1',
 
 	'google' => array(
 		

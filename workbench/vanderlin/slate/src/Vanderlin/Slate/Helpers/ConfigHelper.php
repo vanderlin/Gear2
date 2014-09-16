@@ -28,28 +28,36 @@ class ConfigHelper extends \Illuminate\Config\FileLoader {
     }
 
     
-   public static function my_var_export($in) {
-        
-        $out = "array (\n";
+    // ------------------------------------------------------------------------
+    public static function format_string($t) { 
+        $t = print_r($t, true);
+        $t = str_replace("Array\n", "array", $t);
+        $t = preg_replace('/array\s*/', "array", $t);
+        $t = preg_replace('/\[(.*)\]/', "\"$1\"", $t);
 
-        foreach($in as $k=>$v)
-           {
-           $out .= "\t$k =>\n";
-           $out .= "\tarray (\n";
-           $array_keys = array_keys($v);
-           foreach($array_keys as $k2=>$v2)
-               {
-               if(isset($array[$k][$v2]))
-                   { $array[$k][$v2] = sprintf("'%s'",$array[$k][$v2]); }
-               else
-                   { $array[$k][$v2] = "NULL"; }
-               $out .= sprintf("\t\t'%s' => %s,\n",$v2,$array[$k][$v2]);
-               }
-           $out .= "\t),\n";
-           }
-        $out .= ");";
+        $t = preg_replace_callback(
+            '/(=>\s)(.*)/',
+            function ($matches) {
+                
+                $v = $matches[2];
+                if($v == 'array(') {
+                    return "=> ".$v;
+                }
+                if(is_numeric($v)) {
+                    return "=> ".$v.",";//"=> \"$v\",";
+                }
+                else if($v != 'array(asdas') {
+                    return "=> \"".$v."\",";
+                }
+                //echo $matches[0];
+                
+            },
+            $t
+        );
 
-        return $out;
+        $t = preg_replace('/\)/', "),", $t);
+        $t = preg_replace('/,$/', ";", $t);
+        return $t;
     }
     // ------------------------------------------------------------------------
     static function save($namespace, $environment=null) {
@@ -64,7 +72,7 @@ class ConfigHelper extends \Illuminate\Config\FileLoader {
         
         if($loader->files->exists($local_file)) {
             $c = Config::get("{$namespace}::{$filename}");
-            $data = '<?php return '.var_export( $c, true ).';';
+            $data = '<?php return '.ConfigHelper::format_string( $c );
             
             $loader->files->put($local_file, $data);
 

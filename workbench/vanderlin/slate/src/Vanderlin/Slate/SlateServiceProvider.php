@@ -128,6 +128,11 @@ class SlateServiceProvider extends ServiceProvider {
             return new Commands\PublishSlateCommand;
         });
         $this->commands('slate.publish');
+
+       	$this->app['slate.migrate'] = $this->app->share(function($app) {
+            return new Commands\MigrateSlateCommand;
+        });
+        $this->commands('slate.migrate');
 	}
 
 	// ------------------------------------------------------------------------

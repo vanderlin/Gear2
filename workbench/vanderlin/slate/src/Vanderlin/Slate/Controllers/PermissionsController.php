@@ -1,5 +1,10 @@
 <?php namespace Vanderlin\Slate\Controllers;
 
+use Permission;
+use Input;
+use Redirect;
+use View;
+
 class PermissionsController extends \BaseController {
 
 	/**
@@ -49,9 +54,8 @@ class PermissionsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
-		//
+	public function show($id) {
+		return Redirect::to('/');
 	}
 
 	/**
@@ -61,9 +65,8 @@ class PermissionsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
-	{
-		//
+	public function edit($id) {
+		return View::make('slate::admin.permissions.edit-modal', ['permission'=>Permission::find($id)]);
 	}
 
 	/**
@@ -73,9 +76,21 @@ class PermissionsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
-	{
-		//
+	public function update($id) {
+		$permission = Permission::find($id);
+		if(!$permission) {
+			return Redirect::back()->with(['errors'=>'Missing permissions']);
+		}
+		
+
+		if(Input::has('name')) $permission->name = Input::get('name');
+		if(Input::has('display_name')) $permission->display_name = Input::get('display_name');
+		if($permission->save()) {
+		    return Redirect::back()->with('permissions-notice', '"'.Input::get('display_name').'" has been updated.');
+        } 
+        else {
+            return Redirect::back()->with('permissions-errors', $permission->errors());
+        }
 	}
 
 	/**
@@ -85,9 +100,12 @@ class PermissionsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
-		//
+	public function destroy($id) {
+		$perm = Permission::find($id);
+		if($perm) {
+			$perm->delete();
+		}
+		return Redirect::back()->with(['errors'=>'Missing permissions']);
 	}
 
 }

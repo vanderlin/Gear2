@@ -5,7 +5,7 @@ use Zizaco\Entrust\HasRole;
 class Role extends EntrustRole {
 	use HasRole;
 	public static $rules = array(
-      'name' => 'required|between:4,255'
+      'name' => 'unique:roles|required|between:4,255'
     );
     
 	

@@ -1,5 +1,8 @@
 
-
+{{-- Web site Title --}}
+@section('title')
+{{Config::get('slate::site-name')}} | Forgot Password
+@stop
 
 <!DOCTYPE html>
 <html lang="en">

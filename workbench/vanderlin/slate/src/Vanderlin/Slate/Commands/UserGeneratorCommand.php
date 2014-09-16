@@ -3,9 +3,10 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use Vanderlin\Slate\Models\Asset;
-use Vanderlin\Slate\Models\Role as Role;
-use Vanderlin\Slate\Models\User;
+use Asset;
+use Role;
+use User;
+
 
 class UserGeneratorCommand extends Command {
 

@@ -3,6 +3,9 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Config;
+use ConfigHelper;
+use DB;
 
 class SiteSetupCommand extends Command {
 
@@ -39,7 +42,8 @@ class SiteSetupCommand extends Command {
 	// ------------------------------------------------------------------------
 	public function migrateTheDatabase() {
 		
-		$this->call('migrate', array('-n'=>true));
+		
+		$this->call('migrate', ['--path'=>'workbench/vanderlin/slate/src/Vanderlin/Slate/Migrations/']);
 
 	}
 
@@ -93,6 +97,8 @@ class SiteSetupCommand extends Command {
 		$this->comment("\n*******************************");
 		$this->comment('Setting up Laravel Starter Site');
 		$this->comment("*******************************\n");
+
+		$this->call('config:publish', ['package'=>'vanderlin/slate', '--path'=>'workbench/vanderlin/slate/src/Vanderlin/Slate/Config/']);
 
         // google creds
         if($this->confirm('Use Google+ Auth? [yes|no]', true)) {
@@ -174,7 +180,7 @@ class SiteSetupCommand extends Command {
 			if($prefix) { 
 				$creds['prefix'] = $prefix;
 			}
-			else {
+			else if(empty($creds['prefix'])) {
 				$this->comment("If you do not set a prefix you may run into foriegn key conflics.");
 				$prefix = $this->ask('Database prefix? ');			
 				if($prefix) { 
@@ -190,14 +196,11 @@ class SiteSetupCommand extends Command {
 				$this->line("{$key} = {$value}");
 			}
 
-			$t = ConfigHelper::setAndSaveConfigFile("local/database.php", 'connections.mysql', $creds);
 			Config::set("database.connections.mysql", $creds);
+			ConfigHelper::save('slate::database.connections.mysql', $creds);
 			DB::connection("mysql");
 						
-        }
-
-
-        
+        }        
 
 		 // create a admin user?
         if($this->confirm('Migrate the database? [yes|no]', true)) {
@@ -210,11 +213,14 @@ class SiteSetupCommand extends Command {
 		if( $sitename == NULL) {
 			$sitename = $this->ask('What is the name of this site? ');
 			if($sitename) {
-				Config::set('config.site-name', $sitename);
-				ConfigHelper::save('config', 'production');				
+				Config::set('slate::site-name', $sitename);
+				ConfigHelper::save('slate::site-name');				
+			}
+			else {
+				$sitename = Config::get('slate::site-name');	
 			}
 		}
-		$sitename = empty($sitename)?'Laravel Starter Site' : $sitename;
+		$sitename = empty($sitename) ? 'Laravel Starter Site' : $sitename;
         $this->comment("\nStarter site: {$sitename}\n");
 
 
@@ -224,9 +230,10 @@ class SiteSetupCommand extends Command {
         	$sitepassword = $this->ask('Enter a password for the site? ');
 			if($sitepassword) { 
 				$this->comment("\nPassword to enter site is: {$sitepassword}\n");        	
-				Config::set('config.site-password', $sitepassword);
-				Config::set('config.use_site_login', true);
-				ConfigHelper::save('config', 'production');				
+				Config::set('slate::site-password', $sitepassword);
+				Config::set('slate::use_site_login', true);
+				ConfigHelper::save('slate::site-password');
+				ConfigHelper::save('slate::use_site_login');				
 			}
         }
         
@@ -235,7 +242,7 @@ class SiteSetupCommand extends Command {
 
         // create a admin user?
         if($this->confirm('Do you want to create an Admin user? [yes|no]', true)) {
-        	$this->call('site:adduser', array('--admin' => 'yes'));
+        	$this->call('slate:adduser', array('--admin' => 'yes'));
         }
 
 		$this->comment("\n*******************************");

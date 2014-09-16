@@ -1,6 +1,7 @@
 <?php namespace Vanderlin\Slate;
 use Zizaco\Confide\Confide;
 use Config;
+use Hash;
 /**
  * Class UserRepository
  *

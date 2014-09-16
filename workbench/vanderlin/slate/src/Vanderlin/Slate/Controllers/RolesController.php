@@ -1,6 +1,11 @@
 <?php namespace Vanderlin\Slate\Controllers;
 
 use View;
+use Input;
+use Role;
+use Redirect;
+use Validator;
+use Permission;
 
 class RolesController extends \BaseController {
 
@@ -33,13 +38,22 @@ class RolesController extends \BaseController {
 	 */
 	public function store() {
 
-		if(Input::has('role-name')) {
-			$role = new Role;
-			$role->name = Input::get('role-name');
-			$role->save();
-
-			return Redirect::back()->with(['notice'=>'new role created']);
+		$validator = Validator::make(Input::all(), ['name'=>'required|unique:roles']);
+		if(!$validator->passes()) {
+			return Redirect::back()->with(['errors'=>$validator->errors()->all()]);
 		}
+
+		if(Input::has('name')) {
+			$role = new Role;
+			$role->name = Input::get('name');
+			if($role->save()) {
+				return Redirect::back()->with(['notice'=>'new role created']);	
+			}
+			return Redirect::back()->with(['errors'=>$role->errors->all()]);
+
+			
+		}
+
 		return Redirect::back()->with(['notice'=>'Missing a role name']);
 
 		
@@ -57,15 +71,17 @@ class RolesController extends \BaseController {
 		$role = Role::findOrFail($id);
 		if($role) {
 			$perms = Input::get('perms');
-			$permsToAttach = [];
-			foreach ($perms as $key => $value) {
-				$perm = Permission::where('id', '=', $key)->first();
-				if($perm) {
-					array_push($permsToAttach, $perm->id);
+			if($perms) {
+	 			$permsToAttach = [];
+				foreach ($perms as $key => $value) {
+					$perm = Permission::where('id', '=', $key)->first();
+					if($perm) {
+						array_push($permsToAttach, $perm->id);
+					}
 				}
+				$role->perms()->sync($permsToAttach);
+				return Redirect::back()->with(['roles-notice'=>'Role has been updated']);
 			}
-			$role->perms()->sync($permsToAttach);
-			return Redirect::back()->with(['roles-notice'=>'Role has been updated']);
 		}
 
 		return Redirect::back()->with(['roles-notice'=>'Error updating role']);

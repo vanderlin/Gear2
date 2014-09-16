@@ -12,13 +12,3 @@
 |
 */
 
-
-/*Route::get('/', function() {
-	
-	$t = Config::get('slate::site-name');
-	Config::set('slate::site-name', '123');
-	Config::save();
-
-	return [$t, Config::get('slate::site-name')];
-
-});*/

@@ -5,7 +5,7 @@
         <div class="form-group">
           <label for="role-name" class="col-sm-2 control-label">Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="role-name" name="role-name" placeholder="Role name" value="">
+              <input type="text" class="form-control" id="role-name" name="name" placeholder="Role name" value="">
           </div>
         </div>
 
