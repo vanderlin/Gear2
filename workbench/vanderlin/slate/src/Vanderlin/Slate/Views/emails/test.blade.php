@@ -1,1 +1,0 @@
-The password for {{ URL::to('') }} is <strong>{{ Config::get('slate::site-password')}}</strong>

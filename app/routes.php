@@ -12,3 +12,14 @@
 |
 */
 
+
+
+// --------------------------------------------------------------------------
+// Example how to override the core routes - ie: Home
+// --------------------------------------------------------------------------	
+Route::get('/', function() {
+	if(Auth::check()) {
+		return View::make('slate::site.user.profile', ['user'=>Auth::user()]);
+	}
+	return View::make('slate::site.user.login');
+});

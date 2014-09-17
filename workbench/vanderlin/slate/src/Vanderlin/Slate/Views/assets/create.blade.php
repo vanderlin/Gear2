@@ -1,1 +1,0 @@
-/Users/tvanderlin/Dropbox/IDEO/Dev/localsonly/app/views/assets/create.blade.php
