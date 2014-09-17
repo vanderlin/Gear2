@@ -199,6 +199,7 @@ class SiteSetupCommand extends Command {
 			}
 
 			Config::set("database.connections.mysql", $creds);
+			Config::set("slate::database.connections.mysql", $creds);
 			ConfigHelper::save('slate::database.connections.mysql', $creds);
 			DB::connection("mysql");
 						
